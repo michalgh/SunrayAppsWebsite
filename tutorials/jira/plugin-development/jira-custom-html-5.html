@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Injecting custom HTML to Create Issue dialog</title>
+    <meta name="description" content="How to modify standard Jira templates. How to override Jira templates.">
+    <meta name="author" content="Michal">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="keywords" content="override Jira soy template"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111730950-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-111730950-1');
+    </script>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="../../../img/apple-touch-icon-57.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../img/apple-touch-icon-72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../img/apple-touch-icon-114.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../img/apple-touch-icon-144.png"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="../../../css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/flexslider.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="../../../css/light.css">
+
+    <!--[if lt IE 9]>
+    <script async src="https://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script async src="../../../js/jquery.easing.1.3.js"></script>
+    <script async src="../../../js/jquery.waitforimages.js"></script>
+    <script async src="../../../js/bootstrap.js"></script>
+    <script async src="../../../js/jquery.fitvids.js"></script>
+    <script async src="../../../js/jquery.flexslider-min.js"></script>
+    <script async src="../../../js/main.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <header class="header row clearfix">
+        <div class="header-wrap span12">
+            <div class="row">
+                <div id="logo" class="span4">
+                    <a href="../../../index.html"><img src="../../../img/logo-text.png" alt="logo"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="middle row">
+        <div class="span8 content">
+            <div class="page-header">
+    <h1><b>5. Injecting custom HTML to Create Issue dialog</b></h1>
+</div>
+<div class="post post-single">
+    <div class="info">
+       Updated by <a href="#" class="author">Michal</a> on <span class="date">2018-02-03</span>
+    </div>
+    <div class="post-content">
+
+        <p class="intro">
+            We already have chosen the place where we'd like to inject our customization. It's half of the success, and now we're going to find a way to make it happen.
+        </p>
+        <p>
+    There's no standard way to add own extension to the nonstandard place in Jira. There are couple approaches to
+    achieve the same results all of them have pros and cons. First, I'd like to look at the Javascript code which
+    generates the dialog. We're going to search for a decent place where we can inject our code.
+</p>
+
+<h2>
+    Finding how to extend Create Issue view
+</h2>
+
+<p>
+    We're going to add a checkbox like "Create another" in the Create Issue Dialog. Start with chrome dev tools - right
+    click on <strong>Create another</strong> checkbox and chose <strong>Inspect</strong>.
+</p>
+<p>
+    <img src="../../../img/blog/5/inspect-html-element-min.jpg" alt="Inspect HTML element">
+</p>
+<p>
+    The element has <strong>qf-create-another</strong> id. We can search through all the files to find the origin of
+    this part of HTML.
+</p>
+<p>
+    <img src="../../../img/blog/5/chrome-search-all-files-min.jpg" alt="Chrome search all files">
+</p>
+<p>
+    As you can see on the screen below, JavaScript code generates the create issue form. The function
+    (JIRA.Templates.Issue.createIssueFrom) is global, so it should be easy to modify it.
+</p>
+<p>
+    <img src="../../../img/blog/5/create-issue-form-template-min.jpg" alt="Create issue form - template">
+</p>
+
+<p>
+    If you scroll to the top of the file, you'll find it's a module from <strong>jira-quick-edit-plugin</strong>.
+    Atlassian ships Jira
+    with bundled plugins. The plugins are responsible for things like editing issues, boards, etc. A plugin provides
+    almost every Jira feature.
+</p>
+
+<p>
+    <img src="../../../img/blog/5/jira-module-key-min.jpg" alt="Jira module key">
+</p>
+
+<p>
+    The javascript file represent's a soy template <strong>soy/quickform.soy</strong>. Soy templates are a standard
+    template way in
+    Jira. You can read
+    <a href="https://developers.google.com/closure/templates">more about them</a>, but I'll also cover it later.
+</p>
+<p>
+    Close the Jira create issue dialog. Reload the page with a cache refresh (CTRL+SHIFT+R) and open Chrome dev tools.
+    Type JIRA.Templates.Issue.createIssueForm and you should see an error like below.
+</p>
+<p>
+    <img src="../../../img/blog/5/cannot-read-property-min.jpg"
+         alt="Cannot read property of 'createIssueForm' undefined ">
+</p>
+<p>
+    The function is not defined. If you do the same with the Create Issue dialog open, then you'll see it exists now.
+    Jira loads these functions when needed. We can control resources load time in <strong>atlassian-plugin.xml</strong>.
+</p>
+
+<h2>
+    Extending Jira soy template
+</h2>
+<p>
+    Open <strong>atlassian-plugin.xml</strong> file and find web resource with key
+    <strong>recurring-issues-resources</strong>. As you may notice we
+    already have a dependency on <strong>com.atlassian.auiplugin:ajs</strong>. We need to add another one on
+    <strong>com.atlassian.jira.jira-quick-edit-plugin:quick-form-templates</strong>. It guarantees the template's script
+    will be loaded before our script. The rendering function will be visible and ready to override. It's also a good
+    time to change the context. I changed context to <strong>jira.global</strong> because I'd like to load my script on
+    all Jira
+    pages. You can read more about Jira context in
+    <a href="https://developer.atlassian.com/server/jira/platform/web-resource/#web-resource-contexts-in-jira">official
+        documentation </a>
+    or explore it with
+    <a href="jira-integration-points-4.html#discovering-standard-integration-points"> Web Fragment Finder </a>
+
+</p>
+<p>
+    We have all the parts, and it's time to modify the template.
+</p>
+<p>
+    <script src="https://gist.github.com/michalgh/07ce22e0b17119638bce1a56f076c5f6.js"></script>
+</p>
+<p>
+    Now when the new checkbox is attached to the page, you probably feel we can finally write some code around. You must
+    remember, that if you integrate this way, you have no guarantee it will work in future Jira versions. You should
+    test if it works on all supported Jiras. You can make it manually, but I prefer and recommend to use automatic
+    tests. Next time we're going to <a href="integration-tests-6.html"> create an integration test</a>.
+</p>
+    </div>
+</div>
+        </div>
+        <aside class="span4 content sidebar">
+            <div class="widget clearfix">
+                <h3>CATEGORIES</h3>
+                <ul class="list dots categories">
+                    <li><a href="../../../tutorials/jira/plugin-development/overview-0.html">Jira Plugin Development</a></li>
+                </ul>
+            </div>
+        </aside>
+    </section>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span12 copy-text">
+                <p>&copy;2017 All Rights Reserved by Sunray Apps</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

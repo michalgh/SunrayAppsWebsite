@@ -1,0 +1,78 @@
+
+/*
+	DARK STYLE
+*/
+
+body { text-shadow:0 1px 0 #222; background: #333 url(../img/background/texture-dark.jpg) 0 0 repeat;}
+
+h1 b, h2 b, h3 b, h4 b, h5 b, h6 b, .intro:first-letter { color:#fff; text-shadow: 1px 1px 0px #000, 2px 2px 0px #555, 3px 3px 0px #222, 4px 4px 0px #222; }
+
+.flexslider, .submit-area.loading { background-image:url(../img/background/loading-dark.gif); }
+
+.flex-control-nav li a { background-image:url(../img/background/bg_control_nav_dark.png); }
+
+.flex-caption, #portfolio .item h3.project-title, #portfolio .item .category { text-rendering: auto; text-shadow:none; }
+
+input, textarea { outline:3px solid #333; }
+
+input:focus, textarea:focus { border-color:#333; outline-color:#000; }
+
+#nav ul { background-image:url(../img/background/nav-dropdown-dark.png); }
+
+#nav ul ul { background-image:url(../img/background/nav-dropdown-left-dark.png); }
+
+/* text-colors */
+body { color:#ccc; }
+a { color: #ABB587; }
+a:hover, a:active { color: #ABB587; }
+
+h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, #nav li a, .portfolio-sidebar strong, a.btn, .intro, label, .nav-tabs > .active > a, .nav-tabs > .active > a:hover, .accordion-group.active .accordion-heading .accordion-toggle, #logo h1 a, .tagline h3 { color:#eee; }
+#portfolio .item h3.project-title, .table th, .nav > li > a:hover, h1 b, h2 b, h3 b, h4 b, h5 b, h6 b, .intro:first-letter, #filters .current a, address strong { color:#fff; }
+.widget ul.list li a, code, pre, .contact-info b, input, textarea, select { color:#aaa; }
+.aside p ,blockquote p, .accordion-group .accordion-heading .accordion-toggle, .post .tags a, .pagination a, .archives .list a { color:#bbb; }
+.nav > li > a, .aside h2, #logo p, .accordion-heading .accordion-toggle, .header .menu, .tagline p, .comment-meta a, .page-header h1 .back, .featured-posts .info p, .archives .list li span { color:#999; }
+#nav ul li a, #portfolio .item  .category, #filters a, .post .info, .post .tags, .post .category a, .latest-portfolio .service span, .service-title span, .post-info { color: #aaa; }
+#nav li a:hover, #nav li.active > a, #nav li a.selected:hover, #nav li a.current, #nav li a.selected, #nav li a.current-sub, .media-box .mask .title { color:#fff; text-shadow:0 1px 0 #000; }
+.btn-default { color:#333 !important; }
+.pp_details { color:#333; text-shadow:none; }
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, .category a:hover, .widget ul.list li a:hover, .archives .list a:hover, .tags a:hover { color:#eee; background-color:#111; }
+
+/* border colors */
+.header-wrap, .page-header, .content h2, .tagline, .blog-part h3, .content .tagline, .search-widget, .post .tags, .post-single .media-box, .input-append .send:hover { border-color:#666; }
+.author-info, .author-bio .author-name, .header .menu, #twitter-list ul li span, #flickr_badge_wrapper img, .featured-posts .item, #portfolio .item { border-color:#555; }
+.well, .footer, pre, code, .table th, .table td, .commentlist .children > li, input, textarea, .pagination a, .accordion-inner,#nav ul li a  { border-color:#444; }
+.nav-tabs, .featured-posts img { border-color:#222; }
+#flickr_badge_wrapper img:hover { border-color:#fff; }
+
+/* backgrounds */
+.flex-container .flex-direction-nav li a, .flex-caption, .pagination a:hover, .pagination .current a { background-color: #333; }
+.flex-container .flex-direction-nav li a:hover { background-color:#fff; }
+.table-striped tbody tr:nth-child(odd) td, .table-striped tbody tr:nth-child(odd) th, .nav > li > a:hover, .commentlist .comment-body, #portfolio .item, pre, code, .well, .header .menu { background-color: #333; }
+.header .menu { background-image:url(../img/background/select-bg-dark.png); }
+.media-box .mask { background:#000; background: rgba(0, 0, 0, .7); }
+.commentlist .highlighted > .comment-body { background-color: #98BAB1; }
+#twitter-list ul li span { background:#ddd; background:rgba(255,255,255,.3); }
+.social li a { background-color:#bbb; }
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .accordion-group .accordion-heading .accordion-toggle, .input-append .send { background-color:#222; }
+.show-grid [class*="span"], .pagination a, input, textarea { background-color: #222; }
+.accordion-group.active .accordion-heading .accordion-toggle, .accordion-group .accordion-heading .accordion-toggle:hover { background-color:#111; }
+input.error, textarea.error { background-color:#FFF4F4; }
+blockquote { background-image: url(../img/background/quotes-dark.png); }
+.flex-container .flex-direction-nav li .next { background-position:0 -32px; }
+.flex-container .flex-direction-nav li .next:hover { background-position:-32px -32px; } 
+.flex-container .flex-direction-nav li .prev { background-position:-32px 0; }
+.flex-container .flex-direction-nav li .prev:hover { background-position:0 0; }
+.social li a { background-color:#222; }
+input:focus, textarea:focus { background-color:#222; } 
+.flex-caption { color:#eee; }
+#nav ul li a:hover { background-color:#000; }
+#nav li.active, #nav li:hover, #nav ul li { background: #222; }
+
+/* footer dark style */
+.footer { text-shadow:0 1px 0 #000; border-top:5px solid #222; background: #222; background: rgba(0, 0, 0, .3); }
+.footer b { color:#fff; text-shadow: 1px 1px 0px #000, 2px 2px 0px #555, 3px 3px 0px #222, 4px 4px 0px #222; }
+.footer a { color:#abb587; }
+.footer address strong { color: #fff; }
+.footer .social li a { background-color:#222; }
+#twitter-list ul li span, #flickr_badge_wrapper img { border-color: #222; }
+#twitter-list ul li span { background: #333; background: rgba(0, 0, 0, .3); }

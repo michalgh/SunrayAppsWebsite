@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Jira plugin integration tests</title>
+    <meta name="description" content="How to prepare integration tests for Jira plugin">
+    <meta name="author" content="Michal">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="keywords" content="Jira plugin integration tests"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111730950-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-111730950-1');
+    </script>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="../../../img/apple-touch-icon-57.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../img/apple-touch-icon-72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../img/apple-touch-icon-114.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../img/apple-touch-icon-144.png"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="../../../css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/flexslider.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="../../../css/light.css">
+
+    <!--[if lt IE 9]>
+    <script async src="https://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script async src="../../../js/jquery.easing.1.3.js"></script>
+    <script async src="../../../js/jquery.waitforimages.js"></script>
+    <script async src="../../../js/bootstrap.js"></script>
+    <script async src="../../../js/jquery.fitvids.js"></script>
+    <script async src="../../../js/jquery.flexslider-min.js"></script>
+    <script async src="../../../js/main.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <header class="header row clearfix">
+        <div class="header-wrap span12">
+            <div class="row">
+                <div id="logo" class="span4">
+                    <a href="../../../index.html"><img src="../../../img/logo-text.png" alt="logo"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="middle row">
+        <div class="span8 content">
+            <div class="page-header">
+    <h1><b>6. Jira plugin integration tests</b></h1>
+</div>
+<div class="post post-single">
+    <div class="info">
+       Updated by <a href="#" class="author">Michal</a> on <span class="date">2018-02-17</span>
+    </div>
+    <div class="post-content">
+
+        <p class="intro">
+            Introducing integration tests at the beginning of plugin development is good. It may be even impossible to click through all the versions we'd like to support.
+        </p>
+        <p>
+    As usual, there are multiple ways to achieve the same goal. I'm going to implement the standard method. It's easy to
+    set-up, and it'll be enough for now. In the future, I'll revisit our integration tests and rewrite them to be more
+    powerful.
+</p>
+<h2> Populating Jira with a prepared dataset</h2>
+
+<p>
+    First, we'd like to populate Jira with some essential data. Otherwise, well have to go through the getting started
+    wizard every time we start a test.
+</p>
+
+
+<p>
+    Start Jira with
+    <a href="plugin-skeleton-1.html#run-the-plugin">
+        atlas-debug or atlas-run command.
+    </a>
+    It's essential to start the oldest Jira version we'd like to
+    support. You can use the old dataset in a new version of Jira. It doesn't work the other way because Jira doesn't
+    support downgrade tasks.
+</p>
+
+<p>
+    When you fill your Jira with necessary data, you can backup the current state.
+    Run <strong>atlas-create-home-zip</strong> command. As a result, you'll get a zip file
+    <strong>target/jira/generated-test-resources.zip</strong>.
+    The file contains Jira home directory (configurations, h2 database, and indexes).
+</p>
+
+<p>
+    <img src="../../../img/blog/6/generated-resource-min.jpg" alt="Jira generated resource">
+</p>
+
+<p>
+    It is also possible to restore Jira state from the Jira backup. It's especially useful when we'd like to test on
+    different databases (than the file based).
+</p>
+
+<p>
+    Copy generated zip to <strong>src/test/resources</strong>. You can give a more meaningful name to the file. Go
+    back to the <strong>pom.xml</strong> file. In <strong>maven-jira-plugin</strong> section configure <strong>productDataPath</strong>
+    to point to our backup. Then change <strong>productDataVersion</strong> to reflect our Jira version. See
+    <a href="https://github.com/SunrayApps/jira-recurring-issues/commit/f92b4d0b80a56a298023d2e582113f847020cd07">the
+        diff</a>
+    for reference.
+</p>
+
+<p>
+    Now, every time you start Jira from atlas-run/atlas-debug it'll be populated with the backup data. You can use the
+    backup with any newer version of Jira. The application will handle upgrades.
+</p>
+
+<h2>
+    Writing Plugin integration test
+</h2>
+
+<p2>
+    We have to add some dependencies to our <strong>pom.xml</strong> file to write an integration test. There are three
+    most essential dependencies <strong>jira-testkit-client</strong>, <strong>jira-func-test-basics</strong> and
+    <strong>atlassian-jira-pageobjects</strong>.
+    <a href="https://github.com/SunrayApps/jira-recurring-issues/commit/3c8e919c6917718b3ec31c688d1e1d6218f1286e">See
+        the diff.</a>
+</p2>
+
+<p>
+    One of the dependencies we just added contains <a href="https://github.com/SeleniumHQ/selenium/wiki/PageObjects">
+    page pbjects.</a> We can use them or write our own. We're going to create two page
+    objects. One for the top menu and one that extended Issue Create Dialog (with the extra checkbox added).
+</p>
+
+<p>
+    Before we write the test, we need to specify tested Jira instance.
+    <script src="https://gist.github.com/michalgh/cd613af126a913b6a995334bad53e93a.js"></script>
+</p>
+
+<p>
+    The test will verify if the checkbox is attached. Check <a
+        href="https://github.com/SunrayApps/jira-recurring-issues/commit/ae6883eacb39089d8598edc04ff18f95166552cc">the
+    diff.</a>
+</p>
+
+<p>
+    You can use <strong>atlas-integration-test</strong> to run the integration test. You can also specify the Jira
+    version.
+    <script src="https://gist.github.com/michalgh/b5cc27420560ffad243c24a3295637a2.js"></script>
+</p>
+
+<h2>
+    Pros & cons
+</h2>
+
+<p>
+    As I mentioned at the beginning, this is one of the possible ways to introduce integration tests to Jira plugin.
+    This approach has pros and cons.
+</p>
+
+<h3>
+    Pros:
+</h3>
+<p>
+<ul>
+    <li> Easy to set up</li>
+    <li> The standard way</li>
+    <li> We can reuse Jira page objects</li>
+</ul>
+</p>
+<h3>
+    Cons:
+</h3>
+<p>
+<ul>
+    <li> We build plugin every time with the tested version</li>
+    <li> Jira is set up from war, not from the real Jira installer</li>
+    <li> This way doesn't support data center testing</li>
+    <li> We need to specify each tested version in our CI</li>
+    <li> Uses old Selenium version and old browsers</li>
+    <li> We can't run headless chrome - we need to install Xvfb on CI agent</li>
+    <li> We need to prepare and update Jira versions manually after every release </li>
+</ul>
+</p>
+
+<p>
+    Running the integration tests for each version on the local machine would be overwhelming. Next time we're going to
+    <a href="jira-plugin-ci-7.html">set-up the CI for our plugin</a>.
+</p>
+    </div>
+</div>
+        </div>
+        <aside class="span4 content sidebar">
+            <div class="widget clearfix">
+                <h3>CATEGORIES</h3>
+                <ul class="list dots categories">
+                    <li><a href="../../../tutorials/jira/plugin-development/overview-0.html">Jira Plugin Development</a></li>
+                </ul>
+            </div>
+        </aside>
+    </section>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span12 copy-text">
+                <p>&copy;2017 All Rights Reserved by Sunray Apps</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

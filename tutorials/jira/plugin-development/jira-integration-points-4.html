@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Choosing Jira integration points</title>
+    <meta name="description" content="How to find Jira integration points. How to choose the right one.">
+    <meta name="author" content="Michal">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="keywords" content="Jira plugin integration points"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111730950-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-111730950-1');
+    </script>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="../../../img/apple-touch-icon-57.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../img/apple-touch-icon-72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../img/apple-touch-icon-114.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../img/apple-touch-icon-144.png"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="../../../css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/flexslider.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="../../../css/light.css">
+
+    <!--[if lt IE 9]>
+    <script async src="https://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script async src="../../../js/jquery.easing.1.3.js"></script>
+    <script async src="../../../js/jquery.waitforimages.js"></script>
+    <script async src="../../../js/bootstrap.js"></script>
+    <script async src="../../../js/jquery.fitvids.js"></script>
+    <script async src="../../../js/jquery.flexslider-min.js"></script>
+    <script async src="../../../js/main.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <header class="header row clearfix">
+        <div class="header-wrap span12">
+            <div class="row">
+                <div id="logo" class="span4">
+                    <a href="../../../index.html"><img src="../../../img/logo-text.png" alt="logo"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="middle row">
+        <div class="span8 content">
+            <div class="page-header">
+    <h1><b>4. Choosing integration points</b></h1>
+</div>
+<div class="post post-single">
+    <div class="info">
+       Updated by <a href="#" class="author">Michal</a> on <span class="date">2018-01-27</span>
+    </div>
+    <div class="post-content">
+
+        <p class="intro">
+            It's 4th article, and we didn't code yet. If you're eager to touch the code, then I'm going to disappoint you. You need to wait for the next one. This time I'm focusing on finding a right place for our plugin.
+        </p>
+        <p>
+    Our plugin will not be a separate application leaving in a limbo. It will be a part of the Jira interface, and we
+    should aim to make it seamless, intuitive and straightforward. We need to choose how we'd like to integrate.
+</p>
+<p>
+    There are some rules you can follow to make it as painless as possible.
+</p>
+
+<h2>
+    Cloud and Server Jira Plugin
+</h2>
+
+<p>
+    If you would like to make both cloud and server plugins, then you probably want to make user experience similar. The
+    cloud platform is more limited than the server, so you should start with the cloud API first and see what's possible
+    and what's not. It is also a good advise to develop cloud plugin first. You don't want to end up with a standalone
+    plugin which you can't port. I don't plan to create the cloud version, so I'll skip this point.
+</p>
+
+<h2 id="discovering-standard-integration-points">
+    Discovering standard Jira integration points
+</h2>
+
+<p>
+    It's a good practice to use standard integration points, available in JIRA API. If you use API, it will be easier to
+    achieve compatibility between many versions. Also coexisting with other plugins will make you less headache. We're
+    going to use
+    <a href="https://marketplace.atlassian.com/plugins/com.wittified.webfragment-finder/server/overview"> Web Fragment
+        Finder </a>.
+</p>
+<p>
+<ol>
+    <li>Install the plugin</li>
+    <li>After successful installation, WebFrags should be visible in the top menu. You may need to refresh the page.
+        Click on the menu item.
+    </li>
+    <li>
+        Switch to on all four switches. I'll reveal all the integration points and Jira contexts. Press save to confirm
+        a
+        new configuration.
+    </li>
+</ol>
+</p>
+
+<img src="../../../img/blog/4/jira-panels-sections-context-min.jpg" alt="Jira panels, sections and contexts">
+
+<h2>
+    Discovering nonstandard Jira integration points
+</h2>
+<p>
+
+    I didn't find any standard section which I can use. At least I tried. An API is not limiting us. We can always
+    integrate with JIRA the way we'd like to. It will be harder, and the result will be more fragile, but it's possible.
+    I'm going to integrate Recurring Issues nonstandard way. If you are curious how to use standard Jira integration
+    points, you can find it in the documentation. It will also cover it in one of the next articles.
+</p>
+<img src="../../../img/blog/4/selected-integration-point-min.jpg" alt="Selected integration point">
+<p>
+    I think the best place to create a "recurring issue" is in the same place we create a standard one. It'll be
+    accessible and discoverable.
+</p>
+<p>
+    Next time we're going to find a way to <a href="jira-custom-html-5.html">insert our HTML into the Create Issue Dialog</a>.
+</p>
+    </div>
+</div>
+        </div>
+        <aside class="span4 content sidebar">
+            <div class="widget clearfix">
+                <h3>CATEGORIES</h3>
+                <ul class="list dots categories">
+                    <li><a href="../../../tutorials/jira/plugin-development/overview-0.html">Jira Plugin Development</a></li>
+                </ul>
+            </div>
+        </aside>
+    </section>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span12 copy-text">
+                <p>&copy;2017 All Rights Reserved by Sunray Apps</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

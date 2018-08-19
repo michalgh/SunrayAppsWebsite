@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>How to open Jira plugin in IntelliJ IDEA</title>
+    <meta name="description" content="Check how to integrating Jira plugin with IntelliJ IDEA.">
+    <meta name="author" content="Michal">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="keywords" content="configure IntelliJ to use Atlassian SDK"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111730950-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-111730950-1');
+    </script>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="../../../img/apple-touch-icon-57.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../img/apple-touch-icon-72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../img/apple-touch-icon-114.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../img/apple-touch-icon-144.png"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="../../../css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/flexslider.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="../../../css/light.css">
+
+    <!--[if lt IE 9]>
+    <script async src="https://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script async src="../../../js/jquery.easing.1.3.js"></script>
+    <script async src="../../../js/jquery.waitforimages.js"></script>
+    <script async src="../../../js/bootstrap.js"></script>
+    <script async src="../../../js/jquery.fitvids.js"></script>
+    <script async src="../../../js/jquery.flexslider-min.js"></script>
+    <script async src="../../../js/main.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <header class="header row clearfix">
+        <div class="header-wrap span12">
+            <div class="row">
+                <div id="logo" class="span4">
+                    <a href="../../../index.html"><img src="../../../img/logo-text.png" alt="logo"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="middle row">
+        <div class="span8 content">
+            <div class="page-header">
+    <h1><b>2. How to open Jira plugin in IntelliJ</b></h1>
+</div>
+<div class="post post-single">
+    <div class="info">
+       Updated by <a href="#" class="author">Michal</a> on <span class="date">2018-01-13</span>
+    </div>
+    <div class="post-content">
+
+        <p class="intro">
+            Now, when we have a working project, it is time to see the code like programmers do. The easiest
+way is to use IDE like IntelliJ. This time we are going to pair IntelliJ with our project.
+        </p>
+        <p>
+    You can open the plugin the same way you open any maven project (File->Open-> plugin folder
+    name).
+    However, it is not enough. As you can see, IDEA cannot find some dependencies.
+<p>
+    If you can see the message as below, it means you have to configure Project SDK.
+</p>
+<p>
+    <img src="../../../img/blog/2/setup-sdk-min.jpg" alt="Setup SDK">
+</p>
+
+<p>
+    Click on the Setup SDK link. Either you have to choose one of already configured Java versions
+    or select the folder with the SDK home. We did not configure maven correctly yet.
+</p>
+<p>
+    <img src="../../../img/blog/2/maven-doesnt-work-min.jpg" alt="Maven not configured">
+</p>
+
+<p>
+    Do you wonder, why it works from the command line and doesn't work from the IDE? The secret is
+    SDK uses
+    own maven configuration and not your local one. There are a couple of ways to make it work. One
+    is to configure IntelliJ to use the same configuration SDK uses. Another way is to configure the
+    local maven config. I prefer this method because you can use your custom configurations. For
+    example private repositories. Another benefit is that you can also use the standard maven and
+    you don't have to rely on the SDK's version.
+</p>
+
+<p>
+    First of all type
+    <script src="https://gist.github.com/michalgh/a7cb24103c7f58f3e1fa36207511915c.js"></script>
+</p>
+<p>
+    Look at the output
+    <script src="https://gist.github.com/michalgh/e42fe87d7173e78aa93e6cbaaf7e78f5.js"></script>
+    For us the most interesting is the first line. It reveals the path to custom <strong>settings.xml</strong>
+    file.
+    If you don't have settings.xml file in the ~/.m2 folder you can just copy Atlassian's version.
+</p>
+<p>
+    <script src="https://gist.github.com/michalgh/d3ccafce70cfb444741890546ebe954a.js"></script>
+    Otherwise, you should merge your configuration with the new one.
+</p>
+
+<p>
+    Refresh maven from the IDE. All dependencies should work now.
+</p>
+
+<p>
+    Explore project files. Next time we are going to <a href="project-structure-3.html"> describe all the files and customize it.</a>
+</p>
+    </div>
+</div>
+        </div>
+        <aside class="span4 content sidebar">
+            <div class="widget clearfix">
+                <h3>CATEGORIES</h3>
+                <ul class="list dots categories">
+                    <li><a href="../../../tutorials/jira/plugin-development/overview-0.html">Jira Plugin Development</a></li>
+                </ul>
+            </div>
+        </aside>
+    </section>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span12 copy-text">
+                <p>&copy;2017 All Rights Reserved by Sunray Apps</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

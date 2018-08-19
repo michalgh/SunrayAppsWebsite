@@ -1,0 +1,19 @@
+
+/* 
+	BOXED LAYOUT */
+	
+
+/* custom body background */
+body { background:url(../img/background/colors.jpg) 0 0 no-repeat fixed; background-size:cover; }
+
+/* boxed layout */
+body { overflow-x:hidden; }
+.container { position:relative; background:#fff; }
+.container:before, .container:after { display:block; content: ""; position: absolute; top: 0; width: 40px; height: 100%; background: #FFFFFF; }
+.container:before { left: -40px; }
+.container:after { right: -40px; }
+
+/* boxed footer */
+.footer { padding:0; border:0; }
+.footer .container { padding-top:50px; padding-bottom:30px; border-top: 2px dashed #ddd; }
+.footer .container:before, .footer .container:after { top:-2px; border-top:2px solid #fff;}

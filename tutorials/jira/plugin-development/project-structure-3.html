@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Jira server plugin structure</title>
+    <meta name="description" content="The third part of the Jira plugin development tutorial. This time we&#39;re going to describe plugin&#39;s structure.">
+    <meta name="author" content="Michal">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="keywords" content="Jira plugin development - project structure"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111730950-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-111730950-1');
+    </script>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="../../../img/apple-touch-icon-57.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../img/apple-touch-icon-72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../img/apple-touch-icon-114.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../img/apple-touch-icon-144.png"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="../../../css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/flexslider.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="../../../css/light.css">
+
+    <!--[if lt IE 9]>
+    <script async src="https://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script async src="../../../js/jquery.easing.1.3.js"></script>
+    <script async src="../../../js/jquery.waitforimages.js"></script>
+    <script async src="../../../js/bootstrap.js"></script>
+    <script async src="../../../js/jquery.fitvids.js"></script>
+    <script async src="../../../js/jquery.flexslider-min.js"></script>
+    <script async src="../../../js/main.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <header class="header row clearfix">
+        <div class="header-wrap span12">
+            <div class="row">
+                <div id="logo" class="span4">
+                    <a href="../../../index.html"><img src="../../../img/logo-text.png" alt="logo"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="middle row">
+        <div class="span8 content">
+            <div class="page-header">
+    <h1><b>3. Jira plugin - project structure</b></h1>
+</div>
+<div class="post post-single">
+    <div class="info">
+       Updated by <a href="#" class="author">Michal</a> on <span class="date">2018-01-20</span>
+    </div>
+    <div class="post-content">
+
+        <p class="intro">
+            The <a href="plugin-skeleton-1.html">project is ready </a>,
+and <a href="how-to-integrate-ide-2.html">IntelliJ can open it</a>. It's time to go
+through the project's files and
+customize the plugin.
+        </p>
+        <p>
+    Look at the project's structure
+</p>
+<p>
+    <img src="../../../img/blog/3/jira-plugin-structure-min.jpg" alt="Jira plugin Structure">
+</p>
+<p>
+    If you're familiar with Maven, then you're home. The project looks like every other Maven
+    project.
+</p>
+
+<p>
+    The most important file is <strong>pom.xm</strong>. It describes the build process. We're going
+    to start with
+    this one. We already customized part of it (groupId, artifactId and version). Now it's a good
+    time to change the organization details and plugin description. The changes will be visible in
+    the
+    <a href="https://confluence.atlassian.com/upm/about-the-universal-plugin-manager-305759439.html">UPM</a>.
+    You can also remove dependencies which we don't use (atlassian-plugins-osgi-testrunner, gson).
+    From maven-jira-plugin we should remove com.sunrayapps.jira.plugin.ri.api. We do not plan to
+    export API.
+</p>
+
+<p>The last property in the file we would like to configure is jira.version. We're going to support
+    <strong>Jira 7.1+</strong> (Jira versions which active support). It's a good practice to use the
+    lowest Jira version here. It'll help us to be compatible with the oldest version. It's always
+    easier to achieve forward compatibility. It may be even impossible to backport changes to the
+    older version. For example, in case we use a new API that doesn't exist in the older one. If
+    you're going to create plugin only for private use, then you can set your current Jira version.
+</p>
+
+<p>
+    Now we can remove generated component and interface (MyPluginComponent and
+    MyPluginComponentImpl). And all the tests. We don't need them. After all the changes applied,
+    you may have to reimport maven setting in your idea.
+</p>
+<p>
+    Rerun our customized plugin and check if it works. In case of problems, it may be necessary to
+    clean the project before 'atlas-debug'. This time the script downloads Jira 7.1.0 war.
+</p>
+
+<script src="https://gist.github.com/michalgh/08464855b790e4dec0cfe49caa29a718.js"></script>
+
+<p>
+    This time the script downloads Jira 7.1.0 war. The next most crucial file is
+    "atlassian-plugin.xml". It contains information about the plugin. For example, name,
+    description, icons, and plugin's key. The key needs to be unique globally and immutable. You
+    can't change it after a release. You also cant share it with another plugin. By default, it's
+    groupId plus artifactId.
+    The file also describes resources provided by the plugin. We're going to go into details later.
+    Variables like ${project.description} are injected from pom.xml. You can use here any property
+    defined in the pom file.
+</p>
+
+<p>
+    As you probably notice, we have two plugins with the same name running. We also have two
+    "atlassian-plugin.xml" files. We don't need the one that is in the test package. The one is an
+    example of <a
+        href="https://developer.atlassian.com/server/framework/atlassian-sdk/run-wired-tests-with-the-plugin-test-console/">wired-tests</a>.
+    We don't use it now and don't plan to use it in the foreseeable future. It can be removed.
+</p>
+
+<p>
+    It's worth to mention
+    <a href="https://github.com/SunrayApps/jira-recurring-issues/blob/master/LICENSE">LICENSE</a>
+    file. It is there to remind you, that it's important to choose a
+    license for your add-on. Usually, I change the license in one of the first commits, then I don't
+    have to remember about it. If you prefer to do the things at the last moment, remember to change
+    it before the release.
+</p>
+
+<p>
+    The last file is
+    <a href="https://github.com/SunrayApps/jira-recurring-issues/blob/master/README">README</a>
+    describes some of Atlassian's SDK commands. We already used atlas-debug
+    to run the plugin (link to the first blog post). At the end of the file, you can find a link to
+    the documentation.
+
+</p>
+
+<p>
+    The project also contains icon, logo, CSS and js and i18n file. I'm going to cover it later in
+    this tutorial. Next time we're going to
+    <a href="jira-integration-points-4.html">
+    find an entry point for our plugin.
+    </a>
+</p>
+    </div>
+</div>
+        </div>
+        <aside class="span4 content sidebar">
+            <div class="widget clearfix">
+                <h3>CATEGORIES</h3>
+                <ul class="list dots categories">
+                    <li><a href="../../../tutorials/jira/plugin-development/overview-0.html">Jira Plugin Development</a></li>
+                </ul>
+            </div>
+        </aside>
+    </section>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span12 copy-text">
+                <p>&copy;2017 All Rights Reserved by Sunray Apps</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
